@@ -12,10 +12,10 @@
         <button onclick="logout()">Logout</button>
         <div class="progress-summary">
             <h1>Technician Dashboard</h1>
-            <p>New Works: [Number]</p>
-            <p>In Progress: [Number]</p>
-            <p>Completed: [Number]</p>
-            <p>Works Left: [Number]</p>
+            <p>New Works: {{ new_works_count }}</p>
+            <p>In Progress: {{ in_progress_count }}</p>
+            <p>Completed: {{ completed_count }}</p>
+            <p>Works Left: {{ works_left_count }}</p>
         </div>
         <div class="service-requests">
             <h2>Assigned Service Requests</h2>
@@ -30,8 +30,8 @@
                 <tbody>
                     <!-- Sample row, replace with dynamic content from your backend -->
                     <tr>
-                        <td>Service Request Description</td>
-                        <td>Customer Name</td>
+                        <td>{{ request.description }}</td>
+                        <td>{{ request.customer_name }}</td>
                         <td>
                             <button onclick="assignAnother()">Assign Another</button>
                             <button onclick="markInProgress()">In Progress</button>

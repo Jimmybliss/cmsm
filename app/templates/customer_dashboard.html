@@ -9,27 +9,38 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <script>
-        $(document).ready(function() {
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    var message = "{{ messages[0][1] }}";
-                    alert(message);
-                {% endif %}
-            {% endwith %}
-        });
-</script>
     <div class="dashboard-container">
         <div class="welcome-message">
-            <h1>Welcome, [Customer Name]!</h1>
+            <h1>Welcome!</h1>
             <p>We're delighted to have you as a valued customer at CMSM. Our team is here to assist you with top-notch computer maintenance services.</p>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus cupiditate adipisci mollitia commodi explicabo quam minima ullam cum tempora quaerat ea dignissimos veritatis, eius repellat, fugit ut vero, eligendi quidem.</p>
             <p>How can we help you today?</p>
         </div>
         <div class="dashboard-options">
             <div class="option">
-                <h2>Check In on Existing Request</h2>
-                <button onclick="location.href='/check-status'">Check Status</button>
+                <h3>Your Service Requests</h3>
+                {% if service_requests %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Request ID</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                                </tr>
+                    </thead>
+                    <tbody>
+                        {% for request in service_requests %}
+                            <tr>
+                                <td>{{ request.requestid }}</td>
+                                <td>{{ request.description }}</td>
+                                <td>{{ request.status }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+             <p>No service requests found for this customer.</p>
+            {% endif %}
             </div>
             <div class="option">
                 <h2>Create a New Service Request</h2>

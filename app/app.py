@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 # from werkzeug.security import generate_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
-from random import choice
+from random import choice, random
 import os
 
 app = Flask(__name__)
@@ -23,6 +23,11 @@ class Customer(UserMixin, db.Model):
     phones = db.Column(db.String(15), nullable=False)
     address = db.Column(db.Text, nullable=False)
     password = db.Column(db.String(100), nullable=False)
+
+    @property
+    def is_technician(self):
+        # Placeholder logic; replace it with your actual check
+        return False
 
     def get_id(self):
         return str(self.customerid)
@@ -148,8 +153,59 @@ def customer_signup():
 
 
 @app.route('/technician-dashboard')
+@login_required
 def technician_dashboard():
-    return render_template('technician_dashboard.html')
+    if current_user.is_technician:
+        technicianid = current_user.technicianid
+        technician_service_requests = ServiceRequest.query.filter_by(technicianid=technicianid).all()
+
+        # Calculate counts
+        new_works_count = calculate_works_count(technicianid, 'New')
+        in_progress_count = calculate_works_count(technicianid, 'In Progress')
+        completed_count = calculate_works_count(technicianid, 'Completed')
+        works_left_count = calculate_works_count(technicianid, None)
+
+        return render_template('technician_dashboard.html',
+                               service_requests=technician_service_requests,
+                               new_works_count=new_works_count,
+                               in_progress_count=in_progress_count,
+                               completed_count=completed_count,
+                               works_left_count=works_left_count)
+
+    # If the user is not a technician, handle it appropriately.
+    flash('You do not have access to the technician dashboard.', 'info')
+    return redirect(url_for('home'))
+
+
+def calculate_works_count(technician_id, status=None):
+    # Logic to calculate the count of works based on status for the technician
+    query = ServiceRequest.query.filter_by(technicianid=technician_id)
+    if status:
+        query = query.filter_by(status=status)
+    return query.count()
+
+# Placeholder functions for button actions
+def assign_another(request_id):
+    # Logic to randomly assign the service request to another technician
+    technicians = Technician.query.all()
+    new_technician = random.choice(technicians)
+
+    # Update the service request with the new technician
+    service_request = ServiceRequest.query.get(request_id)
+    service_request.technician_id = new_technician.id
+    db.session.commit()
+
+def mark_in_progress(request_id):
+    # Logic to mark the service request as in progress
+    service_request = ServiceRequest.query.get(request_id)
+    service_request.status = 'In Progress'
+    db.session.commit()
+
+def mark_finished(request_id):
+    # Logic to mark the service request as finished
+    service_request = ServiceRequest.query.get(request_id)
+    service_request.status = 'Completed'
+    db.session.commit()
 
 
 @app.route('/accept-work/<int:request_id>')
@@ -168,28 +224,13 @@ def accept_work(request_id):
 
 # CUSTOMER'S ROUTES ----------------------------------------------------------------------------------
 @app.route('/customer-dashboard')
+@login_required
 def customer_dashboard():
     if current_user.is_authenticated:
-        customer_id = current_user.customerid
-        customer_service_requests = ServiceRequest.query.filter_by(customer_id=customer_id).all()
+        customerid = current_user.customerid
+        customer_service_requests = ServiceRequest.query.filter_by(customerid=customerid).all()
 
-    return render_template('customer_dashboard.html')
-
-
-@app.route('/check-in', methods=['POST'])
-def check_in():
-    '''
-    request_id = request.form.get('request_id')
-    # Add logic to check in on an existing request
-    return f"Checking in on request with ID: {request_id}"
-    '''
-
-@app.route('/new-request')
-def new_request():
-    '''
-    # Add logic to handle creating a new service request
-    return "Create a New Service Request Page"
-    '''
+    return render_template('customer_dashboard.html', service_requests=customer_service_requests)
 
 
 @app.route('/create-service-request', methods=['GET', 'POST'])
@@ -227,26 +268,6 @@ def create_service_request():
         return redirect(url_for('customer_dashboard'))
 
     return render_template('create_service_request.html', current_date="2024-01-30")
-
-
-@app.route('/submit-service-request')#, methods=['POST'])
-def submit_service_request():
-    '''
-    # Retrieve form data
-    customer_name = request.form.get('customer_name')
-    description = request.form.get('description')
-    # You can handle the request_date based on your backend logic
-
-    # Generate a unique service request ID (you may use your own logic)
-    service_request_id = generate_unique_id()
-
-    # Process the service request data (e.g., store it in the database)
-    # ...
-
-    # Pass the service request ID to the template
-
-    return render_template('service_request_confirmation.html', service_request_id=service_request_id)'''
-    return render_template('service_request_confirmation.html')
 
 
 def generate_unique_id():
