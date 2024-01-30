@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Service Request</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="request-form-container">
+        <h1>Create Service Request</h1>
+        <form action="{{ url_for('create_service_request') }}" method="post">
+            <label for="customer-name">Your Name:</label>
+            <input type="text" id="customer" name="customer" required>
+
+            <label for="description">Service Description:</label>
+            <textarea id="description" name="description" rows="4" required></textarea>
+
+            <label for="request-date">Request Date:</label>
+            <input type="text" id="requestdate" name="requestdate" value="{{ current_date }}" readonly>
+
+            <button type="submit">Submit Request</button>
+        </form>
+    </div>
+</body>
+</html>

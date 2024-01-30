@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="{{ url_for('static', filename='js/click_event.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <script>
+        $(document).ready(function() {
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    var message = "{{ messages[0][1] }}";
+                    alert(message);
+                {% endif %}
+            {% endwith %}
+        });
+</script>
+    <div class="dashboard-container">
+        <div class="welcome-message">
+            <h1>Welcome, [Customer Name]!</h1>
+            <p>We're delighted to have you as a valued customer at CMSM. Our team is here to assist you with top-notch computer maintenance services.</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus cupiditate adipisci mollitia commodi explicabo quam minima ullam cum tempora quaerat ea dignissimos veritatis, eius repellat, fugit ut vero, eligendi quidem.</p>
+            <p>How can we help you today?</p>
+        </div>
+        <div class="dashboard-options">
+            <div class="option">
+                <h2>Check In on Existing Request</h2>
+                <button onclick="location.href='/check-status'">Check Status</button>
+            </div>
+            <div class="option">
+                <h2>Create a New Service Request</h2>
+                <button onclick="location.href='/create-service-request'">Create Request</button>
+            </div>
+        </div>
+        <div>
+            <button onclick="logout()" style="margin-top: 50px;">Logout</button>
+        </div>
+    </div>
+</body>
+</html>

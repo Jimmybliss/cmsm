@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Service Request Status</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="check-status-container">
+        <h1>Check Service Request Status</h1>
+        <form action="/check-status" method="post">
+            <label for="service-request-id">Service Request ID:</label>
+            <input type="text" id="service-request-id" name="service_request_id" required>
+
+            <button type="submit">Check Status</button>
+        </form>
+        <!-- Display service request status here -->
+        {% if status %}
+            <div class="status-result">
+                <p>Status for Service Request ID {{ service_request_id }}:</p>
+                <p>{{ status }}</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

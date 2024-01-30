@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technician Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="{{ url_for('static', filename='js/click_event.js') }}"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <button onclick="logout()">Logout</button>
+        <div class="progress-summary">
+            <h1>Technician Dashboard</h1>
+            <p>New Works: [Number]</p>
+            <p>In Progress: [Number]</p>
+            <p>Completed: [Number]</p>
+            <p>Works Left: [Number]</p>
+        </div>
+        <div class="service-requests">
+            <h2>Assigned Service Requests</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Customer</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Sample row, replace with dynamic content from your backend -->
+                    <tr>
+                        <td>Service Request Description</td>
+                        <td>Customer Name</td>
+                        <td>
+                            <button onclick="assignAnother()">Assign Another</button>
+                            <button onclick="markInProgress()">In Progress</button>
+                            <button onclick="markFinished()">Finished</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

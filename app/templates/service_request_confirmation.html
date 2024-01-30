@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Request Confirmation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="confirmation-container">
+        <h1>Service Request Submitted</h1>
+        <p>Your service request has been submitted successfully.</p>
+        <p>Service Request ID: {{ service_request_id }}</p>
+        <p>Please make a note of the service request ID for future reference.</p>
+        <a href="{{ url_for('customer_dashboard')}}"><button class="dashboard-button">Go to Dashboard</button></a>
+    </div>
+</body>
+</html>
