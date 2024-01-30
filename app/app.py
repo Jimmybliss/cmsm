@@ -169,9 +169,9 @@ def accept_work(request_id):
 # CUSTOMER'S ROUTES ----------------------------------------------------------------------------------
 @app.route('/customer-dashboard')
 def customer_dashboard():
-    #if current_user.is_authenticated:
-     #   customer_id = current_user.id
-      #  customer_service_requests = ServiceRequest.query.filter_by(customer_id=customer_id).all()
+    if current_user.is_authenticated:
+        customer_id = current_user.customerid
+        customer_service_requests = ServiceRequest.query.filter_by(customer_id=customer_id).all()
 
     return render_template('customer_dashboard.html')
 
