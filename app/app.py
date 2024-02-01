@@ -174,7 +174,7 @@ def technician_dashboard():
 
     # If the user is not a technician, handle it appropriately.
     flash('You do not have access to the technician dashboard.', 'info')
-    return redirect(url_for('home'))
+    return redirect(url_for('technician_dashboard'))
 
 
 def calculate_works_count(technician_id, status=None):
